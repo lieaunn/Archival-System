@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Library (Table View)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1f1f2e;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #111827;
+      padding: 15px 30px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #2b2b3c;
+    }
+    .container {
+      padding: 20px;
+    }
+
+    /* Search bar with filter */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #2b2b3c;
+      border-radius: 10px;
+      padding: 8px 12px;
+      width: 700px;
+      border: 1px solid #3f3f55;
+      position: relative;
+      margin: 0 auto 20px;
+    }
+    .search-container input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 15px;
+      padding: 6px;
+    }
+    .search-container input::placeholder {
+      color: #9ca3af;
+    }
+    .search-btn, .filter-btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 8px;
+      font-size: 14px;
+    }
+    .search-btn {
+      background: #2563eb;
+      color: white;
+    }
+    .search-btn:hover {
+      background: #1d4ed8;
+    }
+    .filter-btn {
+      background: #ec4899;
+      color: white;
+      position: relative;
+    }
+    .filter-btn:hover {
+      background: #db2777;
+    }
+
+    /* Dropdown menu */
+    .filter-dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #2b2b3c;
+      border: 1px solid #3f3f55;
+      border-radius: 10px;
+      padding: 10px;
+      width: 220px;
+      z-index: 1000;
+    }
+    .filter-dropdown label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #d1d5db;
+    }
+    .filter-dropdown select {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      background: #3b3b4d;
+      color: white;
+      font-size: 14px;
+    }
+    .filter-dropdown select:focus {
+      outline: 2px solid #2563eb;
+    }
+    .apply-filter {
+      background: #10b981;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+      width: 100%;
+    }
+    .apply-filter:hover {
+      background: #059669;
+    }
+
+    /* Table styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #2b2b3c;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+    th {
+      background: #374151;
+      color: #d1d5db;
+      font-weight: bold;
+    }
+    tr:nth-child(even) {
+      background: #323248;
+    }
+    tr:hover {
+      background: #3b3b4d;
+    }
+  </style>
+</head>
+<body>
+  <header>📚 User Library (Table View)</header>
+  
+  <div class="container">
+    <!-- Search bar -->
+    <div class="search-container">
+      <input id="searchInput" type="text" placeholder="Search thesis, author, or keywords...">
+      <button class="search-btn" onclick="applySearch()">🔎 Search</button>
+      <button class="filter-btn" onclick="toggleFilter()">⚙️ Filter</button>
+
+      <!-- Dropdown -->
+      <div class="filter-dropdown" id="filterMenu">
+        <label for="type">Type</label>
+        <select id="type">
+          <option>All</option>
+          <option>Thesis</option>
+          <option>Dissertation</option>
+          <option>Research Paper</option>
+        </select>
+
+        <label for="status">Status</label>
+        <select id="status">
+          <option>All</option>
+          <option>Published</option>
+          <option>Unpublished</option>
+        </select>
+
+        <label for="language">Language</label>
+        <select id="language">
+          <option>All</option>
+          <option>English</option>
+          <option>Filipino</option>
+          <option>Other</option>
+        </select>
+
+        <button class="apply-filter" onclick="applyFilter()">Apply Filter</button>
+      </div>
+    </div>
+
+    <!-- Library table -->
+    <table id="libraryTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Language</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-type="Thesis" data-status="Published" data-language="English">
+          <td>AI in Healthcare</td>
+          <td>Thesis</td>
+          <td>Published</td>
+          <td>English</td>
+          <td>Explores the applications of AI in healthcare systems.</td>
+        </tr>
+        <tr data-type="Research Paper" data-status="Unpublished" data-language="English">
+          <td>Climate Change Impacts</td>
+          <td>Research Paper</td>
+          <td>Unpublished</td>
+          <td>English</td>
+          <td>Analyzes climate change effects on coastal communities.</td>
+        </tr>
+        <tr data-type="Dissertation" data-status="Published" data-language="English">
+          <td>Machine Learning Models</td>
+          <td>Dissertation</td>
+          <td>Published</td>
+          <td>English</td>
+          <td>Study on optimization of ML models for predictive analytics.</td>
+        </tr>
+        <tr data-type="Thesis" data-status="Published" data-language="Filipino">
+          <td>Filipino Literature Analysis</td>
+          <td>Thesis</td>
+          <td>Published</td>
+          <td>Filipino</td>
+          <td>Explores contemporary Filipino literature styles and themes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function toggleFilter() {
+      const menu = document.getElementById("filterMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    function applySearch() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#libraryTable tbody tr");
+
+      rows.forEach(row => {
+        const title = row.cells[0].textContent.toLowerCase();
+        const desc = row.cells[4].textContent.toLowerCase();
+        row.style.display = (title.includes(query) || desc.includes(query)) ? "" : "none";
+      });
+    }
+
+    function applyFilter() {
+      const type = document.getElementById("type").value;
+      const status = document.getElementById("status").value;
+      const language = document.getElementById("language").value;
+      const rows = document.querySelectorAll("#libraryTable tbody tr");
+
+      rows.forEach(row => {
+        const matchType = (type === "All" || row.dataset.type === type);
+        const matchStatus = (status === "All" || row.dataset.status === status);
+        const matchLang = (language === "All" || row.dataset.language === language);
+
+        row.style.display = (matchType && matchStatus && matchLang) ? "" : "none";
+      });
+
+      toggleFilter();
+    }
+
+    // Close dropdown if clicking outside
+    document.addEventListener("click", function(event) {
+      const menu = document.getElementById("filterMenu");
+      const button = document.querySelector(".filter-btn");
+      if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
